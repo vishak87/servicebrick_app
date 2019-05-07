@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "125328966063",
+    "firebase_url": "https://servicebrickapp.firebaseio.com",
+    "project_id": "servicebrickapp",
+    "storage_bucket": "servicebrickapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:125328966063:android:3b3a33b638821e0f",
+        "android_client_info": {
+          "package_name": "sb.com.servicebrick_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "125328966063-935mecgrej9ao5a21dkqh7i7m7vdmm7g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQaXJNmTBuIEIciaOI2oXtf2v_PzzK9aI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "125328966063-935mecgrej9ao5a21dkqh7i7m7vdmm7g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

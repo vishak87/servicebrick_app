@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../pages/loginotppage.dart';
 import 'dart:core';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'firsttimeuserinfo.dart';
 
 class LoginPage extends StatefulWidget{
 
@@ -18,16 +20,21 @@ class LoginPage extends StatefulWidget{
 class _LoginState extends State<LoginPage>{
 
   String _mobilenumber;
+  String verificationId;
+  TextEditingController _phoneNumberController = TextEditingController();
+
+
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Widget _buildMobileTextField() {
     return TextFormField(
+      controller: _phoneNumberController,
       decoration: InputDecoration(labelStyle: TextStyle(color: Colors.blue),
                                     labelText: 'Mobile Number', filled: false,),
       keyboardType: TextInputType.phone,
       validator: (String value) {
-        if(!int.parse(value).isNaN && !(value.length==10)){
+        if(value.isEmpty){
           return 'Should be a valid mobile number';
         }
 
@@ -37,6 +44,48 @@ class _LoginState extends State<LoginPage>{
       },
       );
   }
+
+
+  Future<void> _sendCodeToPhoneNumber() async {
+    final PhoneVerificationCompleted verificationCompleted = (AuthCredential credential) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => UserInfoFirstTime()),
+        );
+    };
+
+    final PhoneVerificationFailed verificationFailed = (AuthException authException) {
+      setState(() {
+        print('Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');}
+               );
+    };
+
+    final PhoneCodeSent codeSent =
+        (String verificationId, [int forceResendingToken]) async {
+      this.verificationId = verificationId;
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => LoginOTPPage()),
+        );
+    };
+
+    final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
+        (String verificationId) {
+      this.verificationId = verificationId;
+      print("time out");
+    };
+
+    await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: _phoneNumberController.text,
+        timeout: const Duration(seconds: 20),
+        verificationCompleted: verificationCompleted,
+        verificationFailed: verificationFailed,
+        codeSent: codeSent,
+        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+  }
+
+
+
 
 
 
@@ -72,14 +121,8 @@ class _LoginState extends State<LoginPage>{
                 textColor: Colors.white,
                 child: Text('SUBMIT', style: TextStyle(fontWeight: FontWeight.bold),),
                 onPressed: (){
-                  // encode password string
-                  // call OTP service
-                  // handle response
-                  // validate response and change state
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginOTPPage()),
-                    );
+
+                  _sendCodeToPhoneNumber();
 
                 }
 
