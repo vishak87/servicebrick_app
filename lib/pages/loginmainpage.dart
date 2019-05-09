@@ -48,6 +48,13 @@ class _LoginState extends State<LoginPage>{
 
   Future<void> _sendCodeToPhoneNumber() async {
     final PhoneVerificationCompleted verificationCompleted = (AuthCredential credential) {
+
+      FirebaseAuth.instance.currentUser().then((FirebaseUser user){
+        user.getIdToken().then((String token){
+          print('Id token is :'+token);
+        });
+      });
+
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => UserInfoFirstTime()),
