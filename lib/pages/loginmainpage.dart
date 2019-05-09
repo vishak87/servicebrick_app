@@ -49,9 +49,9 @@ class _LoginState extends State<LoginPage>{
   Future<void> _sendCodeToPhoneNumber() async {
     final PhoneVerificationCompleted verificationCompleted = (AuthCredential credential) {
 
-      FirebaseAuth.instance.currentUser().then((FirebaseUser user){
-        user.getIdToken().then((String token){
-          print('Id token is :'+token);
+      FirebaseAuth.instance.signInWithCredential(credential).then((user){
+        user.getIdToken().then((idToken){
+          print('The id token is '+ idToken);
         });
       });
 
